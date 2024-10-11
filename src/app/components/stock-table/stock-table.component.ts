@@ -136,6 +136,7 @@ export class StockTableComponent {
 
     removeStock(position: number){
       //this.portfolioService.removeStock(position);
+      //to be made
     }
 
 
