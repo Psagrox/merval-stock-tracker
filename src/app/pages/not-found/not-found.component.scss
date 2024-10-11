@@ -1,0 +1,35 @@
+section {
+  margin-top: 10rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.heads-up{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.botton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 50rem;
+}
+
+.botton button a {
+  color: white;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 15rem;
+  color: rgb(43, 124, 255);
+}

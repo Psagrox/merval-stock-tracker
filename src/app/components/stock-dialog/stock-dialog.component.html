@@ -1,0 +1,64 @@
+<div class="container">
+  <h2 mat-dialog-tittle>Agregar Acción</h2>
+  <form [formGroup]="stockForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Ticket</mat-label>
+      <input matInput formControlName="ticket">
+      <mat-hint>Para acciones Argentinas incluir el :BCBA</mat-hint>
+      @if (stockForm.get('ticket')?.invalid && stockForm.get('ticket')?.touched)
+      {
+        <mat-error>
+          Este campo es obligatorio.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Fecha de compra</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="startDate">
+      <mat-hint>DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      @if (stockForm.get('startDate')?.invalid && stockForm.get('startDate')?.touched)
+      {
+        <mat-error>
+          Este campo es obligatorio.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Cantidad de acciones</mat-label>
+      <input matInput type="number" formControlName="quantity">
+      @if (stockForm.get('quantity')?.invalid && stockForm.get('quantity')?.touched)
+      {
+        <mat-error>
+          Debe ser al menos 1.
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Precio total de compra</mat-label>
+      <input matInput type="number" formControlName="totalPurchasePrice">
+      <mat-hint>En ARS (pesos Argentinos)</mat-hint>
+      @if (stockForm.get('totalPurchasePrice')?.invalid && stockForm.get('totalPurchasePrice')?.touched)
+      {
+        <mat-error>
+          Debe ser al menos 1.
+        </mat-error>
+      }
+    </mat-form-field>
+
+      <mat-checkbox matInput formControlName="priceType">¿Cotiza en pesos?</mat-checkbox>
+
+
+    <div mat-dialog-actions class="dialog">
+      <button mat-raised-button (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button type="submit" [disabled]="stockForm.invalid">Agregar</button>
+    </div>
+  </form>
+</div>
+
+
