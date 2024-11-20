@@ -13,7 +13,7 @@ export class StockService {
   dolarMep: number = 1187
   private apiUrl = 'https://real-time-finance-data.p.rapidapi.com/stock-quote';
   private headers  = new HttpHeaders({
-      'x-rapidapi-key': '9dbcc0870amsh393bb195ebc30b3p1e6dfajsncf1f1953e403',
+      'x-rapidapi-key': 'YOUR_API_KEY',
       'x-rapidapi-host': 'real-time-finance-data.p.rapidapi.com',
     });
 
