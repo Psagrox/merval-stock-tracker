@@ -35,6 +35,15 @@ The portfolio is displayed in an interactive table. Each row contains the stock 
 
 You can import and export the portfolio data in CSV format from the options menu.
 
+## Demo
+
+You can try the live demo of the app hosted on Firebase:
+
+[View Demo](https://merval-stock-tracker.firebaseapp.com/)
+
+This demo allows you to interact with the app, add stocks, view your portfolio, and try importing/exporting data.
+
+
 ## Contributing
 
 Contributions are welcome! If you have an improvement or fix, please open a pull request or an issue.
