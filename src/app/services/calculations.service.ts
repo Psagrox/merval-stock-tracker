@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PriceType, StockPrice } from '@models/stock.model';
 
 /**
   * Calculate the currente stock price and the percentage change.
@@ -17,22 +18,34 @@ export class CalculationsService {
   calculateStockPrice(
     currentPrice: number,
     dolarMep: number,
+    historicDolarMep: number,
     priceType: boolean,
     totalPurchasePrice: number,
     quantity: number,
-  ): { adjustedPrice: number, percentageChange: number } {
-    if (priceType) {
-      totalPurchasePrice /= dolarMep;
+  ) {
+    try {
+      let adjustedTotalPurchasePrice =
+        totalPurchasePrice / historicDolarMep;
+
+      let totalCurrentPrice = priceType ?
+        (quantity * currentPrice) / dolarMep :
+        (quantity * currentPrice);
+
+      const adjustedPrice = priceType ?
+        currentPrice / dolarMep :
+        currentPrice;
+
+      const percentageChange = ((totalCurrentPrice - adjustedTotalPurchasePrice) * 100) / adjustedTotalPurchasePrice;
+
+      return {
+        adjustedPrice: adjustedPrice,
+        totalPurchasePrice: adjustedTotalPurchasePrice,
+        totalCurrentPrice,
+        percentageChange: Number(percentageChange.toFixed(2))
+      };
+    } catch (error) {
+      console.error('Error en cálculo:', error);
+      throw new Error('Error al calcular precios de stock');
     }
-
-    const adjustedPrice = priceType ? currentPrice / dolarMep : currentPrice;
-
-    const percentageChange = ((adjustedPrice * quantity) * 100) / totalPurchasePrice;
-
-    return {
-      adjustedPrice,
-      percentageChange
-    };
   }
-
 }

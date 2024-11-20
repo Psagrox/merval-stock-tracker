@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "dist/merval-tracker-app/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+
+  }
+}

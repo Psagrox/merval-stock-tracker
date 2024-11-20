@@ -51,4 +51,18 @@ export class StockService {
     )
   }
 
+  /**
+   * Obtain the historic dolar MEP quote.
+   * @returns An uptdate of the historic dolarMep value.
+   */
+  historicDolarUpdate(date: string): Observable<any> {
+    const url = `https://api.argentinadatos.com/v1/cotizaciones/dolares/bolsa/${date}`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        console.log('Error actualizando cotizacion:', error);
+        throw error;
+      })
+    )
+  }
+
 }

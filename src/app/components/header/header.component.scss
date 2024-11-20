@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  background-color: rgb(41, 123, 255);
+  color: white;
+  font-family: 'Noto Sans', sans-serif;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 150px;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+
+    .finance-icon {
+      font-size: 5rem;
+      width: 80px;
+      height: auto;
+      margin-right: 1.2rem;
+      color: white;
+    }
+
+    .app-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .header-right {
+    display: flex;
+    gap: 1.5rem;
+    margin-right: 1.5rem;
+
+    .social-link {
+      color: white;
+      text-decoration: none;
+
+      fa-icon {
+        font-size: 3.5rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: rgba(255, 255, 255, 0.8);
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+}

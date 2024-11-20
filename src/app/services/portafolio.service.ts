@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { StockPrice } from '@models/stock.model';
-import { DataSource } from '@angular/cdk/collections';
-import { ReplaySubject, Observable, of } from 'rxjs';
+import { ColumNames, defaultPortfolioData, StockPrice } from '@models/stock.model';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 /**
  * Methods for change the portafolio.
@@ -10,39 +9,91 @@ import { ReplaySubject, Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class PortafolioService {
+  private readonly STORAGE_KEY = 'portfolio';
+  private portfolioData: StockPrice[] = [];
+  private portfolioSubject = new BehaviorSubject<StockPrice[]>([]);
 
+  // Public observable
+  public portfolio$ = this.portfolioSubject.asObservable();
 
-}
-
-/*portfolioData: StockPrice[] = [];
-  private portfolioDataSubject = new ReplaySubject<StockPrice[]>(1);
-
-  portfolioDataObservable = this.portfolioDataSubject.asObservable();
-
-  dataToDisplay = [...this.portfolioData];
-  dataSource = new DataSourceClass(this.dataToDisplay);
-
-  initializePortfolioData() {
-    this.portfolioDataSubject.next(defaultPortfolioData);
+  constructor() {
+    this.loadPortfolio();
   }
 
-  addStock (stockToAdd: StockPrice): void{
-    this.portfolioData.push({ ...stockToAdd });
-    this.portfolioDataSubject.next(this.portfolioData);
-    console.log('Portafolio:', this.portfolioData);
+  private loadPortfolio(): void {
+    try {
+      const savedData = localStorage.getItem(this.STORAGE_KEY);
+      if (savedData) {
+        const portfolio = JSON.parse(savedData);
+        this.portfolioSubject.next(portfolio);
+      }
+    } catch (error) {
+      console.error('Error cargando portfolio:', error);
+      this.portfolioSubject.next([]);
+    }
   }
 
-  removeStock(index: number): void{
-    this.portfolioData.splice(index, 1);
-    console.log('Acción eliminada del portafolio:', this.portfolioData);
+  private updatePortfolio(portfolio: StockPrice[]): void {
+    this.portfolioSubject.next([...portfolio]);
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(portfolio));
+  }
+
+
+
+  addStock(stock: StockPrice): void {
+    const currentPortfolio = this.portfolioSubject.value;
+    const updatedPortfolio = [...currentPortfolio, stock];
+    this.updatePortfolio(updatedPortfolio);
+  }
+
+  removeStock(index: number): void {
+    const currentPortfolio = this.portfolioSubject.value;
+    if (index >= 0 && index < currentPortfolio.length) {
+      const updatedPortfolio = currentPortfolio.filter((_, i) => i !== index);
+      this.updatePortfolio(updatedPortfolio);
+    }
+  }
+
+  updateStock(index: number, updatedStock: StockPrice): void {
+    const currentPortfolio = this.portfolioSubject.value;
+    if (index >= 0 && index < currentPortfolio.length) {
+      const updatedPortfolio = currentPortfolio.map((stock, i) =>
+        i === index ? { ...updatedStock } : stock
+      );
+      this.updatePortfolio(updatedPortfolio);
+    }
   }
 
   getPortfolio(): StockPrice[] {
-    console.log('Tabla actualizada', this.portfolioData)
-    return Object.values(this.portfolioData);
+    return [...this.portfolioData];
   }
 
-  clearPortafolio(): void {
-    this.portfolioData = [];
-    console.log('Portafolio vaciado');
-  } */
+  clearPortfolio(): void {
+    this.updatePortfolio([]);
+  }
+
+  // Export as CSV
+  exportToCSV(): string {
+    const headers = Object.values(ColumNames).join(',');
+    const rows = this.portfolioSubject.value.map(stock => {
+      return [
+        stock.name,
+        stock.ticket,
+        stock.startDate,
+        stock.quantity,
+        stock.totalPurchasePrice,
+        stock.currentPrice,
+        stock.totalCurrentPrice,
+        stock.percentageChange,
+        stock.priceType,
+      ].join(',');
+    });
+    return [headers, ...rows].join('\n');
+  }
+
+  setPortfolio(portfolio: StockPrice[]) {
+    this.updatePortfolio(portfolio);
+  }
+
+}
+
